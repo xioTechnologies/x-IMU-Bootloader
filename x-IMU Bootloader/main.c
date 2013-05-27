@@ -28,8 +28,8 @@ _FWDT(FWDTEN_OFF)			// Watchdog Timer: Disabled
 
 #define bluetoothEnablePin _LATA9
 
-#define FCY   			    29480000                
-#define BRGVAL              15
+#define FCY   			    39998371               
+#define BRGVAL              21
 
 #define COMMAND_NACK        0x00
 #define COMMAND_ACK         0x01
@@ -227,8 +227,8 @@ void initMain(void) {
 	_RP6R = 0b00110;							// RP6 (RB6) mapped to U2RTS (Bluetooth CTS)
 	_INT1R = 11;								// RP11 (RB11) mapped to INT1 (sleep/wake button)
 	_RP24R = 0b01000;							// RP24 (RC8) mapped to SCK1 (SD card CLK)
-	_SDI1R = 25;								// RP25 (RC9) mapped to SDI2 (uSD card DOUT)
-	_RP23R = 0b00111;							// RP23 (RC7) mapped to SDO2 (uSD card DIN)
+	_SDI1R = 25;								// RP25 (RC9) mapped to SDI2 (SD card DOUT)
+	_RP23R = 0b00111;							// RP23 (RC7) mapped to SDO2 (SD card DIN)
 	asm volatile("BSET OSCCON, #6");			// lock the control registers
 
 	/* Misc. inits */
@@ -240,10 +240,11 @@ void initMain(void) {
 	//PMD2 = 0xFFFF;
 	//PMD3 = 0xFDFF;								// do not disable RTCC
 
-	/* Setup PLL for at 29.48 MIPS */
+	/* Setup PLL for at 39.9984 MIPS */
 	_PLLPRE = 0;
-	_PLLDIV = 30;
+	_PLLDIV = 40;
 	_PLLPOST = 0;
+	OSCTUN = 9;
 	while(!OSCCONbits.LOCK);					// wait for PLL to lock
 }
 
