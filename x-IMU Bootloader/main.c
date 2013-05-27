@@ -198,7 +198,7 @@ int main(void) {
 
 //---------------------------------------------------------------------------------------------------
 // Initialise I/O, oscillator and other core registers
-// Copied from firmware source
+// Copied from firmware source (some lines commented out)
 
 void initMain(void) {   
 
@@ -210,25 +210,25 @@ void initMain(void) {
 	LATB = 0x0000;
 	LATC = 0x0000;
 	TRISA = 0x040D;								// setup all TRIS
-	TRISB = 0x0A80;
+	TRISB = 0xFA8F;
 	TRISC = 0x023C;
-	AD1PCFGL = 0xFFFE;							// configure all I/O pins to be digital except AN1 (IMPORTANT: settings lost if ADC peripheral disabled)
+	AD1PCFGL = 0xFFFE;							// configure all I/O pins to be digital except AN1 (IMPORTANT: value lost if ADC peripheral disabled)
 
 	/* Map peripherals */
-	//unMapAllPeripherals();                      // un-map all peripherals as bootloader may use different settings
+	//unmapAllPeripherals();                      // un-map all peripherals as bootloader may use different settings
 	asm volatile("BCLR OSCCON, #6");			// unlock the control registers
-		_RP17R = 0b00011;						// RP17 (RC1) mapped to U1TX (FTDI RX)
-		_U1RXR = 19;							// RP19 (RC3) mapped to U1RX (FTDI TX)
-		_U1CTSR = 18;							// RP18 (RC2) mapped to U2CTS (FTDI RTS)
-		_RP16R = 0b00100;						// RP16 (RC0) mapped to U2RTS (FTDI CTS)
-		_RP5R = 0b00101;						// RP5 (RB5) mapped to U2TX (Bluetooth RX)
-		_U2RXR = 21;							// RP21 (RC5) mapped to U2RX (Bluetooth TX)
-		_U2CTSR = 20;							// RP20 (RC4) mapped to U2CTS (Bluetooth RTS)
-		_RP6R = 0b00110;						// RP6 (RB6) mapped to U2RTS (Bluetooth CTS)
-		_INT1R = 11;							// RP11 (RB11) mapped to INT1 (sleep/wake button)
-		_RP24R = 0b01000;						// RP24 (RC8) mapped to SCK1 (SD card CLK)
-		_SDI1R = 25;							// RP25 (RC9) mapped to SDI2 (uSD card DOUT)
-		_RP23R = 0b00111;						// RP23 (RC7) mapped to SDO2 (uSD card DIN)
+	_RP17R = 0b00011;							// RP17 (RC1) mapped to U1TX (FTDI RX)
+	_U1RXR = 19;								// RP19 (RC3) mapped to U1RX (FTDI TX)
+	_U1CTSR = 18;								// RP18 (RC2) mapped to U2CTS (FTDI RTS)
+	_RP16R = 0b00100;							// RP16 (RC0) mapped to U2RTS (FTDI CTS)
+	_RP5R = 0b00101;							// RP5 (RB5) mapped to U2TX (Bluetooth RX)
+	_U2RXR = 21;								// RP21 (RC5) mapped to U2RX (Bluetooth TX)
+	_U2CTSR = 20;								// RP20 (RC4) mapped to U2CTS (Bluetooth RTS)
+	_RP6R = 0b00110;							// RP6 (RB6) mapped to U2RTS (Bluetooth CTS)
+	_INT1R = 11;								// RP11 (RB11) mapped to INT1 (sleep/wake button)
+	_RP24R = 0b01000;							// RP24 (RC8) mapped to SCK1 (SD card CLK)
+	_SDI1R = 25;								// RP25 (RC9) mapped to SDI2 (uSD card DOUT)
+	_RP23R = 0b00111;							// RP23 (RC7) mapped to SDO2 (uSD card DIN)
 	asm volatile("BSET OSCCON, #6");			// lock the control registers
 
 	/* Misc. inits */
@@ -236,7 +236,7 @@ void initMain(void) {
 	_NSTDIS = 0;								// interrupt nesting enabled
 
 	///* Disable power to all peripherals */
-	//PMD1 = 0xFFFF;
+	//PMD1 = 0xFFFE;								// do not disable ADC
 	//PMD2 = 0xFFFF;
 	//PMD3 = 0xFDFF;								// do not disable RTCC
 
