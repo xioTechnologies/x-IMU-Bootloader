@@ -26,6 +26,8 @@ _FWDT(FWDTEN_OFF)			// Watchdog Timer: Disabled
 //---------------------------------------------------------------------------------------------------
 // Definitions
 
+#define bluetoothEnablePin _LATA9
+
 #define FCY   			    29480000                
 #define BRGVAL              15
 
@@ -91,6 +93,7 @@ int main(void) {
 	
 	initMain();
 	initRapidFlashLED();
+	bluetoothEnablePin = 1;
 
 	RCONbits.SWDTEN=0;                                              // Disable Watch Dog Timer
 	while(OSCCONbits.LOCK!=1) {};                                   // Wait for PLL to lock
@@ -206,7 +209,7 @@ void initMain(void) {
 	LATA = 0x0000;								// clear all LAT
 	LATB = 0x0000;
 	LATC = 0x0000;
-	TRISA = 0x000D;								// setup all TRIS
+	TRISA = 0x040D;								// setup all TRIS
 	TRISB = 0x0A80;
 	TRISC = 0x023C;
 	AD1PCFGL = 0xFFFE;							// configure all I/O pins to be digital except AN1 (IMPORTANT: settings lost if ADC peripheral disabled)
