@@ -258,7 +258,7 @@ void initRapidFlashLED(void) {
 	asm volatile("BSET OSCCON, #6");    // lock the control registers
 	
 	/* Setup TMR2 */
-    T2CON = 0x8000;			            // clear register
+    T2CON = 0x0000;			            // clear register
     T2CONbits.TCKPS = 0b10;             // 1:64 prescaler
     T2CONbits.TON = 1;                  // start TMR2
     
